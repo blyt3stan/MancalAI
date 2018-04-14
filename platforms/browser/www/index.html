@@ -5,7 +5,7 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     <title>HIVLessPHL</title>
 </head>
-<body ng-app="app">
+<body ng-app="app"  ng-controller="game" >
 
     <script src="js/jquery-3.3.1.js"></script>
     <script src="js/angular.min.js"></script>
@@ -22,14 +22,39 @@
         </div>
     </div>
 
-    <div ng-controller="game" class="container">
+    <div class="container" ng-show="!started">
+        <div class="row">
+            <div class="col-xs-4">
+                <label>Beads Count  <input type="number" min="1"  class="form-control" ng-model="beads"/></label>
+            </div>
+            <div class="col-xs-4">
+                <label>Level  <input type="number" minc class="form-control" ng-model="level"/></label>
+            </div>
+            <div class="col-xs-4">
+                <label>Speed  <input class="form-control " ng-model="speed"/></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-2">
+                
+            </div>
+            <div class="col-xs-8">
+                    <button class="btn btn-info col-xs-12" ng-click="start()">Start</button>
+            </div>
+            <div class="col-xs-2">
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="container" ng-show="started">
         <div class="row">
             <div class="col-xs-1">
 
             </div>
             <div class="col-xs-2 text-center">
                 <div class="row">
-                    <button class="btn btn-default col-xs-12"">You</button>
+                    <button class="btn btn-default col-xs-12">You</button>
                 </div>
                 <div class="row">
                     <button class="btn btn-default col-xs-12">{{holes[13].count}}</button>
@@ -109,8 +134,30 @@
             </div>
 
         </div>
+        <div class="row">
+            <div class="col-xs-2">
+                
+            </div>
+            <div class="col-xs-8 text-center">
+                <h3>{{status}}</h3>
+            </div>
+            <div class="col-xs-2">
+                
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-xs-2">
+                
+            </div>
+            <div class="col-xs-8">
+                <button class="btn btn-info col-xs-12" ng-click="reset()">Reset</button>
+            </div>
+            <div class="col-xs-2">
+                
+            </div>
+        </div>
     </div>
-
-
 </body>
 </html>
