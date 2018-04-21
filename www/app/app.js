@@ -17,7 +17,9 @@ app.controller('game', [
         $scope.end = false;
         $scope.level = 1;
         $scope.speed = 100;
-        
+        $scope.direction = 1;
+        $scope.condition = 0;
+
 
         $scope.aiPlayerTurn = function() {
 
@@ -46,7 +48,12 @@ app.controller('game', [
                 }
             }
 
-            ids.sort(function(a,b) {return a < b});
+            ids.sort(function(a,b) {
+				if($scope.condition == 0)
+					return a < b;
+				else
+					return a > b;
+			});
 
             var id = $scope.analyzeIds(ids);
             $scope.pick(id);
@@ -226,12 +233,17 @@ app.controller('game', [
                     
                 } else {
 
-                    next++;
+                    next += $scope.direction;
 
+                    if (next > 13)
+                        next = 0;
+                    if (next < 0)
+                        next = 13;
+					
                     if(turn == 1 && next == 13)
-                        next++;
+                        next += $scope.direction;
                     if(turn == 2 && next == 6)
-                        next++;
+                        next += $scope.direction;
 
                     if (next > 13)
                         next = 0;
@@ -251,6 +263,10 @@ app.controller('game', [
                 var max = -1;
                 var mId = 0;
                 var mCnt = 0;
+				
+				var min = 100;
+				var lId = 0;
+                var lCnt = 100;
                 
                 angular.forEach(ids, function(id) {
                     if($scope.holes[id].count > 0) {
@@ -269,20 +285,42 @@ app.controller('game', [
                                 mCnt = $scope.holes[id].count;
                             }
                         }
+						if(cnt >= 0 && cnt < min) {
+                            min = cnt;
+                            lId = id;
+                            lCnt = $scope.holes[id].count;
+                        }else if(cnt == min){
+                            if($scope.holes[id].count < lCnt) {
+                                lId = id;
+                                lCnt = $scope.holes[id].count;
+                            }
+                        }
                     }
                 });
 
-                if(nId != -1) {
-                    if(nId > mId) {
-                        return nId;
-                    }else if(nId < mId && max == 1) {
-                        return nId;
-                    }else{
-                        return mId;
-                    }
-                }else{
-                    return mId;
-                }
+				if($scope.condition == 1) {
+					return lId;
+				} else if(nId != -1) {
+					if($scope.direction == 1) {
+						if(nId > mId) {
+							return nId;
+						}else if(nId < mId && max == 1) {
+							return nId;
+						}else{
+							return mId;
+						}
+					}else{		
+						if(nId < mId) {
+							return nId;
+						}else if(nId > mId && max == 1) {
+							return nId;
+						}else{
+							return mId;
+						}
+					}
+				} else {
+					return mId;
+				}
             }
 
             $scope.simulate = function(i) {
@@ -307,15 +345,15 @@ app.controller('game', [
                         return temp[13].count - prev;	
                     } else {
 
-                        next++;
-
-                        if(next == 6)
-                            next++;
+                        next += $scope.direction;
 
                         if (next > 13)
                             next = 0;
                         if (next < 0)
                             next = 13;
+
+                        if(next == 6)
+                            next += $scope.direction;
 
                         temp[next].count++;
                         hand--;
@@ -325,3 +363,20 @@ app.controller('game', [
         }
 
     }]);
+	
+	app.directive(
+		'convertToNumber', 
+		function() {
+			return {
+				require: 'ngModel',
+				link: function(scope, element, attrs, ngModel) {
+					ngModel.$parsers.push(function(val) {
+						return val != null ? parseInt(val, 10) : null;
+					});
+					ngModel.$formatters.push(function(val) {
+						return val != null ? '' + val : null;
+					});
+				}
+			};
+		}
+	);

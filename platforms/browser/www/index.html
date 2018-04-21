@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <title>HIVLessPHL</title>
+    <title>MancalAI</title>
 </head>
 <body ng-app="app"  ng-controller="game" >
 
@@ -32,6 +32,24 @@
             </div>
             <div class="col-xs-4">
                 <label>Speed  <input class="form-control " ng-model="speed"/></label>
+            </div>
+        </div>
+		 <div class="row">
+            <div class="col-xs-4">
+                <label style="width:100%">Direction  
+					<select convert-to-number class="form-control" ng-model="direction">
+						<option value="1">Clockwise</option>
+						<option value="-1">Counterclockwise</option>
+					</select>
+				</label>
+            </div>
+			<div class="col-xs-4">
+                <label style="width:100%">Winning Condition  
+					<select convert-to-number class="form-control" ng-model="condition">
+						<option value="0">Most Beads</option>
+						<option value="1">Least Beads</option>
+					</select>
+				</label>
             </div>
         </div>
         <div class="row">
