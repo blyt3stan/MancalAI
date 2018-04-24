@@ -22,16 +22,154 @@
         </div>
     </div>
 
-    <div class="container" ng-show="!started">
+	
+    <div class="container" ng-show="phase == 0">
+        <div class="row">
+            <div class="col-xs-2">
+                
+            </div>
+            <div class="col-xs-8">
+                    <button class="btn btn-primary col-xs-12" ng-click="phase = 2">Play</button>
+            </div>
+            <div class="col-xs-2">
+                
+            </div>
+        </div>
+		<br/>
+        <div class="row">
+            <div class="col-xs-2">
+                
+            </div>
+            <div class="col-xs-8">
+                    <button class="btn btn-info col-xs-12" ng-click="phase = 1">How to Play</button>
+            </div>
+            <div class="col-xs-2">
+                
+            </div>
+        </div>
+		<br/>
+        <div class="row">
+            <div class="col-xs-2">
+                
+            </div>
+            <div class="col-xs-8">
+                    <button class="btn btn-danger col-xs-12" ng-click="exit()">Exit</button>
+            </div>
+            <div class="col-xs-2">
+                
+            </div>
+        </div>
+	</div>
+	
+	<div class="container" ng-show="phase == 1">
+		tutorial here!
+		
+        <div class="row">
+            <div class="col-xs-2">
+                
+            </div>
+            <div class="col-xs-8">
+                    <button class="btn btn-danger col-xs-12" ng-click="phase = 0">Back</button>
+            </div>
+            <div class="col-xs-2">
+                
+            </div>
+        </div>
+	</div>
+	
+	<div class="container" ng-show="phase == 2">
+	
+        <div class="row text-center" ng-show="player">
+            <h4>Hi, {{player.name}}</h4>
+        </div>
+        <div class="row">
+            <div class="col-xs-2">
+                
+            </div>
+            <div class="col-xs-8">
+                <button class="btn btn-info col-xs-12" ng-click="phase = 5">Profiles</button>
+            </div>
+            <div class="col-xs-2">
+                
+            </div>
+        </div>
+		<br/>
+        <div class="row">
+            <div class="col-xs-2">
+                
+            </div>
+            <div class="col-xs-8">
+                <button class="btn btn-primary col-xs-12" ng-click="mode = 0;phase = 3">Player vs Player</button>
+            </div>
+            <div class="col-xs-2">
+                
+            </div>
+        </div>
+		<br/>
+        <div class="row" ng-show="player">
+            <div class="col-xs-2">
+                
+            </div>
+            <div class="col-xs-8">
+                    <button class="btn btn-primary col-xs-12" ng-click="mode = 1;phase = 3">Player vs AI</button>
+            </div>
+            <div class="col-xs-2">
+                
+            </div>
+        </div>
+		<br/>
+        <div class="row">
+            <div class="col-xs-2">
+                
+            </div>
+            <div class="col-xs-8">
+                    <button class="btn btn-danger col-xs-12" ng-click="phase = 0">Back</button>
+            </div>
+            <div class="col-xs-2">
+                
+            </div>
+        </div>
+		
+	</div>
+	
+    <div class="container" ng-show="phase == 3">
         <div class="row">
             <div class="col-xs-4">
-                <label>Beads Count  <input type="number" min="1"  class="form-control" ng-model="beads"/></label>
+                <label style="width:100%">Beads Count  
+					<select convert-to-number class="form-control" ng-model="beads">
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+					</select>
+				</label>
+            </div>
+            <div class="col-xs-4" ng-show="mode==1">
+                <label style="width:100%">Level
+					<select convert-to-number class="form-control" ng-model="level">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+					</select>
+				</label>
             </div>
             <div class="col-xs-4">
-                <label>Level  <input type="number" minc class="form-control" ng-model="level"/></label>
-            </div>
-            <div class="col-xs-4">
-                <label>Speed  <input class="form-control " ng-model="speed"/></label>
+                <label style="width:100%">Speed  
+					<select convert-to-number class="form-control" ng-model="speed">
+						<option value="500">x1</option>
+						<option value="250">x2</option>
+						<option value="125">x3</option>
+					</select>
+				</label>
             </div>
         </div>
 		 <div class="row">
@@ -52,12 +190,25 @@
 				</label>
             </div>
         </div>
+		<br/>
         <div class="row">
             <div class="col-xs-2">
                 
             </div>
             <div class="col-xs-8">
-                    <button class="btn btn-info col-xs-12" ng-click="start()">Start</button>
+                    <button class="btn btn-primary col-xs-12" ng-click="start()">Start</button>
+            </div>
+            <div class="col-xs-2">
+                
+            </div>
+        </div>
+		<br/>
+        <div class="row">
+            <div class="col-xs-2">
+                
+            </div>
+            <div class="col-xs-8">
+                    <button class="btn btn-danger col-xs-12" ng-click="phase = 2">Back</button>
             </div>
             <div class="col-xs-2">
                 
@@ -65,14 +216,14 @@
         </div>
     </div>
 
-    <div class="container" ng-show="started">
+    <div class="container" ng-show="phase == 4">
         <div class="row">
             <div class="col-xs-1">
 
             </div>
             <div class="col-xs-2 text-center">
                 <div class="row">
-                    <button class="btn btn-default col-xs-12">You</button>
+                    <button class="btn btn-default col-xs-12">{{mode == 1 ? 'You' : 'Player 1'}}</button>
                 </div>
                 <div class="row">
                     <button class="btn btn-default col-xs-12">{{holes[13].count}}</button>
@@ -142,7 +293,7 @@
                     <button class="btn btn-default col-xs-12">{{holes[6].count}}</button>
                 </div>
                 <div class="row">
-                    <button class="btn btn-default col-xs-12">AI</button>
+                    <button class="btn btn-default col-xs-12">{{mode == 1 ? 'AI' : 'Player 2'}}</button>
                 </div>
             </div>
 
@@ -170,12 +321,96 @@
                 
             </div>
             <div class="col-xs-8">
-                <button class="btn btn-info col-xs-12" ng-click="reset()">Reset</button>
+                <button class="btn btn-danger col-xs-12" ng-click="phase = 3">Back</button>
             </div>
             <div class="col-xs-2">
                 
             </div>
         </div>
     </div>
+	
+	<div class="container" ng-show="phase == 5">
+		<div class="row">
+            <div class="col-xs-3">
+                
+            </div>
+            <div class="col-xs-6">
+				<label style="width: 100%"> Select Profile
+					<select class="form-control" 
+						ng-model="player"
+						ng-change="selectProfile()"
+						ng-options="p as p.name for p in data.players">>
+					</select>
+				</label>
+            </div>
+			<div class="col-xs-3">
+                 
+            </div>
+        </div>
+		<br/>
+        <div class="row">
+            <div class="col-xs-2">
+                
+            </div>
+            <div class="col-xs-8">
+                <button class="btn btn-info col-xs-12" ng-click="phase = 6">Create</button>
+            </div>
+            <div class="col-xs-2">
+                
+            </div>
+        </div>
+		<br/>
+        <div class="row">
+            <div class="col-xs-2">
+                
+            </div>
+            <div class="col-xs-8">
+                <button class="btn btn-danger col-xs-12" ng-click="phase = 2">Back</button>
+            </div>
+            <div class="col-xs-2">
+                
+            </div>
+        </div>
+	</div>
+	
+	<div class="container" ng-show="phase == 6">
+		<div class="row">
+            <div class="col-xs-3">
+                
+            </div>
+            <div class="col-xs-6">
+				<label style="width: 100%"> Profile Name
+					<input type="text" class="form-control" ng-model="newPlayer"/>
+				</label>
+            </div>
+			<div class="col-xs-3">
+                
+            </div>
+        </div>
+		<br/>
+        <div class="row">
+            <div class="col-xs-2">
+                
+            </div>
+            <div class="col-xs-8">
+                <button class="btn btn-success col-xs-12" ng-click="saveProfile()">Save</button>
+            </div>
+            <div class="col-xs-2">
+                
+            </div>
+        </div>
+		<br/>
+        <div class="row">
+            <div class="col-xs-2">
+                
+            </div>
+            <div class="col-xs-8">
+                <button class="btn btn-danger col-xs-12" ng-click="phase = 2">Back</button>
+            </div>
+            <div class="col-xs-2">
+                
+            </div>
+        </div>
+	</div>
 </body>
 </html>

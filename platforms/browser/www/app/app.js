@@ -3,26 +3,34 @@
 app.controller('game', [
     '$scope',
     '$interval',
+	'storage',
     function (
         $scope,
-	    $interval) {
+	    $interval,
+		storage) {
 
         var oppMap = [12, 11, 10, 9, 8, 7, -1, 5, 4, 3, 2, 1, 0, -1];
 	    var turn = 1;
         var running = false;
+		
+		$scope.data = storage.get();
 
-        $scope.started = false;
+        $scope.phase = 0;
         $scope.beads = 6;
         $scope.status = '';
         $scope.end = false;
         $scope.level = 1;
-        $scope.speed = 100;
+        $scope.speed = 500;
         $scope.direction = 1;
         $scope.condition = 0;
-
+		$scope.player = $scope.data.selPlayer;
+		$scope.mode = 0;
 
         $scope.aiPlayerTurn = function() {
-
+			
+			if(mode == 0)
+				return;
+			
             var ids = [];
 
             var maxGen = 0;
@@ -92,17 +100,25 @@ app.controller('game', [
 
             $scope.holes.push(p2Home);
 
-            $scope.started = true;
+            $scope.phase = 4;
 
             updateTurnStatus();
         }
 
         var updateTurnStatus = function() {
-            if(turn == 1) {
-                $scope.status = "Player Turn"
-            }else if(turn == 2){
-                $scope.status = "AI Turn"
-            }
+			if($scope.mode == 0) {
+				if(turn == 1) {
+					$scope.status = "Player 1 Turn"
+				}else if(turn == 2){
+					$scope.status = "Player 2 Turn"
+				}
+			} else if ($scope.mode == 1) {
+				if(turn == 1) {
+					$scope.status = "Player Turn"
+				}else if(turn == 2){
+					$scope.status = "AI Turn"
+				}
+			}
         }
         
         var showWin = function() {
@@ -122,17 +138,13 @@ app.controller('game', [
             var p2 = $scope.holes[13].count;
 
             if(p1 > p2){
-                $scope.status = 'Player Wins!';
+                $scope.status = $scope.mode == 0 ? 'Player 1' : 'Player Wins!';
             }else if(p1 < p2) {
-                $scope.status = 'AI Wins!';
+                $scope.status = $scope.mode == 0 ? 'Player 2' : 'AI Wins!';
             }else{
                 $scope.status = 'Draw';
             }
 
-        }
-
-        $scope.reset = function() {
-            $scope.started = false;
         }
 
         var isGameEnd = function() {
@@ -178,7 +190,7 @@ app.controller('game', [
             var next = i;
 
             var stop = $interval(function () {
-                if(!$scope.started) {
+                if($scope.phase != 4) {
                     $interval.cancel(stop);
                     stop = undefined;
                     running = false;
@@ -322,45 +334,61 @@ app.controller('game', [
 					return mId;
 				}
             }
-
-            $scope.simulate = function(i) {
-
-                var temp = angular.copy($scope.holes);
-                var hand = temp[i].count;
-                temp[i].count = 0;
-                var next = i;
-                var prev = temp[13].count;
-                if(temp[i] == 0)
-                    return 0;
-                while(true) {
-                    if(hand == 0 && next == 13) {
-                        return -(temp[13].count - prev);			
-                    } else if (hand == 0) {
-
-                        var opp = oppMap[next];
-                        if(next >= 7 && next <= 12 && temp[next].count == 1 && temp[opp].count > 0) {
-                            temp[13].count += temp[opp].count + 1;
-                        }
-
-                        return temp[13].count - prev;	
-                    } else {
-
-                        next += $scope.direction;
-
-                        if (next > 13)
-                            next = 0;
-                        if (next < 0)
-                            next = 13;
-
-                        if(next == 6)
-                            next += $scope.direction;
-
-                        temp[next].count++;
-                        hand--;
-                    }
-                }
-            }
+			
         }
+		
+		$scope.simulate = function(i) {
+
+			var temp = angular.copy($scope.holes);
+			var hand = temp[i].count;
+			temp[i].count = 0;
+			var next = i;
+			var prev = temp[13].count;
+			if(temp[i] == 0)
+				return 0;
+			while(true) {
+				if(hand == 0 && next == 13) {
+					return -(temp[13].count - prev);			
+				} else if (hand == 0) {
+
+					var opp = oppMap[next];
+					if(next >= 7 && next <= 12 && temp[next].count == 1 && temp[opp].count > 0) {
+						temp[13].count += temp[opp].count + 1;
+					}
+
+					return temp[13].count - prev;	
+				} else {
+
+					next += $scope.direction;
+
+					if (next > 13)
+						next = 0;
+					if (next < 0)
+						next = 13;
+
+					if(next == 6)
+						next += $scope.direction;
+
+					temp[next].count++;
+					hand--;
+				}
+			}
+		}
+		
+			
+		$scope.saveProfile = function() {
+			$scope.player = {name: $scope.newPlayer};
+			$scope.data.players.push($scope.player); 
+			storage.set($scope.data);
+			$scope.newPlayer = '';
+			$scope.phase = 5; 
+		}
+		
+		$scope.selectProfile = function() {
+			console.log($scope.player);
+			$scope.data.selPlayer = $scope.player;
+			storage.set($scope.data);
+		}
 
     }]);
 	
@@ -378,5 +406,24 @@ app.controller('game', [
 					});
 				}
 			};
+		}
+	);
+	
+	
+	app.service(
+		'storage', 
+		function() {
+			this.get = function() {
+				var data = JSON.parse(window.localStorage.getItem('data'));
+				if(!data)
+					data = {
+						players: []
+					};
+				return data;
+			}
+			
+			this.set = function(data) {
+				window.localStorage.setItem('data', JSON.stringify(data));
+			}
 		}
 	);
