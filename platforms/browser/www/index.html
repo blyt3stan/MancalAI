@@ -339,7 +339,7 @@
 					<select class="form-control" 
 						ng-model="player"
 						ng-change="selectProfile()"
-						ng-options="p as p.name for p in data.players">>
+						ng-options="p as p.name for p in data.players track by p.name">
 					</select>
 				</label>
             </div>
