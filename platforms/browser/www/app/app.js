@@ -19,16 +19,19 @@ app.controller('game', [
         $scope.beads = 6;
         $scope.status = '';
         $scope.end = false;
-        $scope.level = 1;
         $scope.speed = 500;
         $scope.direction = 1;
         $scope.condition = 0;
 		$scope.player = $scope.data.selPlayer;
+		
+		if($scope.player)
+			$scope.level = $scope.player.level || 1;
+		
 		$scope.mode = 0;
 
         $scope.aiPlayerTurn = function() {
 			
-			if(mode == 0)
+			if($scope.mode == 0)
 				return;
 			
             var ids = [];
@@ -139,6 +142,19 @@ app.controller('game', [
 
             if(p1 > p2){
                 $scope.status = $scope.mode == 0 ? 'Player 1' : 'Player Wins!';
+				if($scope.mode == 1) {
+					$scope.level++;
+					$scope.player.level = $scope.level;
+					$scope.data.selPlayer.level = $scope.level;
+					
+					angular.forEach($scope.data.players, function(item) {
+						if(item.name == $scope.player.name) {
+							item.level = $scope.player.level;
+						}
+					});
+					
+					storage.set($scope.data);
+				}
             }else if(p1 < p2) {
                 $scope.status = $scope.mode == 0 ? 'Player 2' : 'AI Wins!';
             }else{
@@ -377,7 +393,7 @@ app.controller('game', [
 		
 			
 		$scope.saveProfile = function() {
-			$scope.player = {name: $scope.newPlayer};
+			$scope.player = {name: $scope.newPlayer, level: 1};
 			$scope.data.players.push($scope.player); 
 			storage.set($scope.data);
 			$scope.newPlayer = '';
@@ -385,11 +401,26 @@ app.controller('game', [
 		}
 		
 		$scope.selectProfile = function() {
-			console.log($scope.player);
 			$scope.data.selPlayer = $scope.player;
+			$scope.level = $scope.player.level || 1;
 			storage.set($scope.data);
 		}
-
+		
+		$scope.deleteProfile = function() {
+			$scope.data.players = $scope.data.players.filter(x => x.name !== $scope.player.name);
+			$scope.player = null;
+			$scope.data.selPlayer = null;
+			storage.set($scope.data);
+		}
+		
+		$scope.selectProfile = function() {
+			$scope.data.selPlayer = $scope.player;
+			$scope.level = $scope.player.level || 1;
+			storage.set($scope.data);
+		}
+		$scope.exit = function() {
+			window.close();
+		}
     }]);
 	
 	app.directive(
