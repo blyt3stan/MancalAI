@@ -23,6 +23,7 @@ app.controller('game', [
         $scope.direction = 1;
         $scope.condition = 0;
 		$scope.player = $scope.data.selPlayer;
+		$scope.hasWin = 0;
 		
 		if($scope.player)
 			$scope.level = $scope.player.level || 1;
@@ -71,6 +72,7 @@ app.controller('game', [
         }
 
         $scope.start = function() {
+			$scope.hasWin = 0;
             turn = 1;
             running = false;
             $scope.end = false;
@@ -152,13 +154,15 @@ app.controller('game', [
 							item.level = $scope.player.level;
 						}
 					});
-					
+					$scope.hasWin = 1;
 					storage.set($scope.data);
 				}
             }else if(p1 < p2) {
                 $scope.status = $scope.mode == 0 ? 'Player 2 Win' : 'AI Wins!';
+				$scope.hasWin = 2;
             }else{
                 $scope.status = 'Draw';
+				$scope.hasWin = 2;
             }
 
         }
