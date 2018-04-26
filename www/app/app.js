@@ -141,7 +141,7 @@ app.controller('game', [
             var p2 = $scope.holes[13].count;
 
             if(p1 > p2){
-                $scope.status = $scope.mode == 0 ? 'Player 1' : 'Player Wins!';
+                $scope.status = $scope.mode == 0 ? 'Player 1 Win' : 'Player Wins!';
 				if($scope.mode == 1) {
 					$scope.level++;
 					$scope.player.level = $scope.level;
@@ -156,7 +156,7 @@ app.controller('game', [
 					storage.set($scope.data);
 				}
             }else if(p1 < p2) {
-                $scope.status = $scope.mode == 0 ? 'Player 2' : 'AI Wins!';
+                $scope.status = $scope.mode == 0 ? 'Player 2 Win' : 'AI Wins!';
             }else{
                 $scope.status = 'Draw';
             }
