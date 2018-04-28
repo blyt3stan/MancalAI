@@ -41,7 +41,7 @@
                 
             </div>
             <div class="col-xs-8">
-                    <button class="btn btn-info col-xs-12" ng-click="phase = 1">How to Play</button>
+                    <button class="btn btn-info col-xs-12" ng-click="phase = 1;helpPage = 1;">How to Play</button>
             </div>
             <div class="col-xs-2">
                 
@@ -62,14 +62,36 @@
 	</div>
 	
 	<div class="container" ng-show="phase == 1">
-		tutorial here!
-		
+		<div class="row">
+			<div class="col-xs-12 text-center">
+				<h4 ng-show="helpPage==1"><strong>Game Board:</strong> This is the layout of Mancalai Game Board</h4>
+				<h4 ng-show="helpPage==2"><strong>Pots:</strong> There are 6 pots on both sides containing 5 stones</h4>
+				<h4 ng-show="helpPage==3"><strong>Sides</strong></h4>
+				<h4 ng-show="helpPage==4"><strong>Mancala Pots</strong></h4>
+				<h4 ng-show="helpPage==5"><strong>Direction:</strong> Stones get distributed Clockwise or Counterclockwise</h4>
+				<h4 ng-show="helpPage==6"><strong>Winning:</strong> Capture Most or Least Stones in your Mancala pot to win.</h4>
+			</div>
+		</div>
+	    <div class="row">
+			<div class="col-xs-12">
+				<img ng-show="helpPage==1" class="img-responsive" style="margin: 0 auto;" src="./images/layout.jpg"></img>
+				<img ng-show="helpPage==2" class="img-responsive" style="margin: 0 auto;" src="./images/stones.jpg"></img>
+				<img ng-show="helpPage==3" class="img-responsive" style="margin: 0 auto;" src="./images/sides.jpg"></img>
+				<img ng-show="helpPage==4" class="img-responsive" style="margin: 0 auto;" src="./images/pots.jpg"></img>
+				<img ng-show="helpPage==5" class="img-responsive" style="margin: 0 auto;" src="./images/direction.jpg"></img>
+				<img ng-show="helpPage==6" class="img-responsive" style="margin: 0 auto;" src="./images/wins.jpg"></img>
+			</div>
+		</div>
+		<br/>
         <div class="row">
             <div class="col-xs-2">
                 
             </div>
-            <div class="col-xs-8">
-                    <button class="btn btn-danger col-xs-12" ng-click="phase = 0">Back</button>
+            <div class="col-xs-4">
+                    <button class="btn btn-danger col-xs-12" ng-click="helpPage = helpPage - 1;phase = helpPage < 1 ? 0 : 1;">Back</button>
+            </div>
+            <div class="col-xs-4">
+                    <button class="btn btn-primary col-xs-12" ng-click="helpPage = helpPage + 1;phase = helpPage > 6 ? 0 : 1;">Next</button>
             </div>
             <div class="col-xs-2">
                 
@@ -140,8 +162,8 @@
 		</div>
         <div class="row">
             <div class="col-xs-6">
-                <label style="width:100%">Beads Count  
-					<select convert-to-number class="form-control" ng-model="beads">
+                <label style="width:100%">Stones Count  
+					<select convert-to-number class="form-control" ng-model="stones">
 						<option value="4">4</option>
 						<option value="5">5</option>
 						<option value="6">6</option>
@@ -173,8 +195,8 @@
 			<div class="col-xs-6">
                 <label style="width:100%">Winning Condition  
 					<select convert-to-number class="form-control" ng-model="condition">
-						<option value="0">Most Beads</option>
-						<option value="1">Least Beads</option>
+						<option value="0">Most Stones</option>
+						<option value="1">Least Stones</option>
 					</select>
 				</label>
             </div>

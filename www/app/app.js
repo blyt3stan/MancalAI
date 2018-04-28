@@ -16,7 +16,7 @@ app.controller('game', [
 		$scope.data = storage.get();
 
         $scope.phase = 0;
-        $scope.beads = 6;
+        $scope.stones = 6;
         $scope.status = '';
         $scope.end = false;
         $scope.speed = 500;
@@ -24,6 +24,7 @@ app.controller('game', [
         $scope.condition = 0;
 		$scope.player = $scope.data.selPlayer;
 		$scope.hasWin = 0;
+		$scope.helpPage = 0;
 		
 		if($scope.player)
 			$scope.level = $scope.player.level || 1;
@@ -78,7 +79,7 @@ app.controller('game', [
             $scope.end = false;
             
             var holeCnt = 6;
-            var initCount = Number.parseInt($scope.beads);
+            var initCount = Number.parseInt($scope.stones);
     
             var p1holes = [];
             var p2holes = [];
