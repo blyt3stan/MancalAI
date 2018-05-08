@@ -144,7 +144,11 @@ app.controller('game', [
             var p2 = $scope.holes[13].count;
 
             if(p1 > p2){
-                $scope.status = $scope.mode == 0 ? 'Player 1 Win' : 'Player Wins!';
+				if($scope.condition == 0) {
+					$scope.status = $scope.mode == 0 ? 'Player 1 Win' : 'Player Wins!';
+				} else {
+					$scope.status = $scope.mode == 0 ? 'Player 2 Win' : 'AI Wins!';
+				}
 				if($scope.mode == 1) {
 					$scope.level++;
 					$scope.player.level = $scope.level;
@@ -159,7 +163,11 @@ app.controller('game', [
 					storage.set($scope.data);
 				}
             }else if(p1 < p2) {
-                $scope.status = $scope.mode == 0 ? 'Player 2 Win' : 'AI Wins!';
+                if($scope.condition == 0) {
+					$scope.status = $scope.mode == 0 ? 'Player 2 Win' : 'AI Wins!';
+				} else {
+					$scope.status = $scope.mode == 0 ? 'Player 1 Win' : 'Player Wins!';
+				}
 				$scope.hasWin = 2;
             }else{
                 $scope.status = 'Draw';
